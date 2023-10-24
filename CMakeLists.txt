@@ -3,4 +3,4 @@ project(AlgorithmDesign)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(AlgorithmDesign main.cpp MaximumSubArray.hpp ActivitySelection.hpp)
+add_executable(AlgorithmDesign src/main.cpp include/MaximumSubArray.hpp include/ActivitySelection.hpp)
