@@ -1,2 +1,8 @@
 # CMake build directories
 cmake-build-*/
+
+# IntelliJ / CLion / Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
