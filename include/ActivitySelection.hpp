@@ -26,7 +26,7 @@ struct Activity
     int f;  // finish time
     Activity(int s, int f): s(s), f(f) {};
     friend std::ostream& operator<<(std::ostream &os, const Activity &a) {
-        os << "Activity["<<a.s<<"->"<<a.f<<"]";
+        os << "Activity["<<a.s<<"->"<<a.f<<"]" << std::endl;
         return os;
     }
 };
@@ -110,12 +110,12 @@ size_t count_conflict(const Activity &a, const deque<Activity> &s) {
  * @return 最终活动集
  */
 deque<Activity> first_finish_prior(deque<Activity> s) {
-    std::cout << __FUNCTION__ << std::endl;
+    std::cout << "==== "<< __FUNCTION__ << " ====" <<std::endl;
 
     std::sort(s.begin(), s.end(), [](Activity a1, Activity a2) {return a1.f < a2.f;});
 
-    std::cout << " sorted s: ";
-    std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << a << ", ";});
+    std::cout << "sorted s: " << std::endl;;
+    std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << "\t"<<a;});
     std::cout << std::endl;
 
     deque<Activity> output = drop_conflict(s);
@@ -123,11 +123,11 @@ deque<Activity> first_finish_prior(deque<Activity> s) {
 }
 
 deque<Activity> last_start_prior(deque<Activity> s) {
-    std::cout << __FUNCTION__ << std::endl;
+    std::cout << "==== "<< __FUNCTION__ << " ====" <<std::endl;
     std::sort(s.begin(), s.end(), [](Activity a1, Activity a2) {return a1.s > a2.s;});
 
-    std::cout << " sorted s: ";
-    std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << a << ", ";});
+    std::cout << "sorted s: " << std::endl;;
+    std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << "\t"<<a;});
     std::cout << std::endl;
 
     deque<Activity> output = drop_conflict(s);
@@ -135,13 +135,13 @@ deque<Activity> last_start_prior(deque<Activity> s) {
 }
 
 deque<Activity> shortest_prior(deque<Activity> s) {
-    std::cout << __FUNCTION__ << std::endl;
+    std::cout << "==== "<< __FUNCTION__ << " ====" <<std::endl;
 
     std::sort(s.begin(), s.end(),
               [](Activity a1, Activity a2) {return (a1.f - a1.s) < (a2.s - a2.f);});
 
-    std::cout << " sorted s: ";
-    std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << a << ", ";});
+    std::cout << "sorted s: " << std::endl;;
+    std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << "\t"<<a;});
     std::cout << std::endl;
 
     deque<Activity> output = drop_conflict(s);
@@ -149,12 +149,12 @@ deque<Activity> shortest_prior(deque<Activity> s) {
 }
 
 deque<Activity> first_start_prior(deque<Activity> s) {
-    std::cout << __FUNCTION__ << std::endl;
+    std::cout << "==== "<< __FUNCTION__ << " ====" <<std::endl;
 
     std::sort(s.begin(), s.end(), [](Activity a1, Activity a2) {return a1.s < a2.s;});
 
-    std::cout << " sorted s: ";
-    std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << a << ", ";});
+    std::cout << "sorted s: " << std::endl;;
+    std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << "\t"<<a;});
     std::cout << std::endl;
 
     deque<Activity> output = drop_conflict(s);
@@ -162,7 +162,7 @@ deque<Activity> first_start_prior(deque<Activity> s) {
 }
 
 deque<Activity> least_conflict_prior(deque<Activity> s) {
-    std::cout << __FUNCTION__ << std::endl;
+    std::cout << "==== "<< __FUNCTION__ << " ====" <<std::endl;
 
     deque<Activity> output;
     while (!s.empty()) {
