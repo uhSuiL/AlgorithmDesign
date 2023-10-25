@@ -3,10 +3,24 @@
 #include "../include/MaximumSubArray.hpp"
 #include "../include/ActivitySelection.hpp"
 
+
 void test_activity_selection(int n = 10) {
-    std::cout << __FUNCTION__  << std::endl;
+    std::cout << "====== "<<  __FUNCTION__ << " ======" << std::endl;
     auto activities = get_activities(10);
+
     auto output = first_finish_prior(activities);
+    std::for_each(output.begin(), output.end(), [](Activity a) {std::cout << a << ", ";});
+
+    output = last_start_prior(activities);
+    std::for_each(output.begin(), output.end(), [](Activity a) {std::cout << a << ", ";});
+
+    output = shortest_prior(activities);
+    std::for_each(output.begin(), output.end(), [](Activity a) {std::cout << a << ", ";});
+
+    output = first_start_prior(activities);
+    std::for_each(output.begin(), output.end(), [](Activity a) {std::cout << a << ", ";});
+
+    output = least_conflict_prior(activities);
     std::for_each(output.begin(), output.end(), [](Activity a) {std::cout << a << ", ";});
 }
 

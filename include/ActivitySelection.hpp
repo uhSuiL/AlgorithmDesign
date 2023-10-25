@@ -61,6 +61,48 @@ deque<Activity> get_activities(int n)
 }
 
 /**
+ * 删除s中与a冲突的元素
+ * @param a
+ * @param s
+ */
+void drop_conflict(const Activity &a, deque<Activity> &s) {
+    auto it = s.cbegin();
+    while (it != s.cend()) {
+        if (it->s <= a.f)
+            it = s.erase(it);
+        else
+            ++it;
+    }
+}
+
+/**
+ * [loop]取s的第一个元素, 然后删除s中与之冲突的元素, 直到s为空
+ * @param s
+ * @return
+ */
+deque<Activity> drop_conflict(deque<Activity> &s) {
+    deque<Activity> output;
+    while (!s.empty()) {
+        auto a = s[0];
+        output.push_back(a);
+        s.pop_front();
+        drop_conflict(a, s);
+    }
+    return output;
+}
+
+size_t count_conflict(const Activity &a, const deque<Activity> &s) {
+    size_t num_conflict = 0;
+    for (auto it = s.begin(); it < s.end(); ++it) {
+        if (a.s < it->f or a.f > it->s)
+            ++num_conflict;
+    }
+    return num_conflict;
+}
+
+// ========================== Algorithms ==========================
+
+/**
  * 最早结束活动优先
  *  先对所有活动按照结束时间从早到晚排序
  *  [loop]拿到一个活动, 排除剩下活动中与之时间冲突的活动, 直到没有剩余活动
@@ -68,25 +110,69 @@ deque<Activity> get_activities(int n)
  * @return 最终活动集
  */
 deque<Activity> first_finish_prior(deque<Activity> s) {
+    std::cout << __FUNCTION__ << std::endl;
+
     std::sort(s.begin(), s.end(), [](Activity a1, Activity a2) {return a1.f < a2.f;});
+
+    std::cout << " sorted s: ";
     std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << a << ", ";});
     std::cout << std::endl;
 
+    deque<Activity> output = drop_conflict(s);
+    return output;
+}
+
+deque<Activity> last_start_prior(deque<Activity> s) {
+    std::cout << __FUNCTION__ << std::endl;
+    std::sort(s.begin(), s.end(), [](Activity a1, Activity a2) {return a1.s > a2.s;});
+
+    std::cout << " sorted s: ";
+    std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << a << ", ";});
+    std::cout << std::endl;
+
+    deque<Activity> output = drop_conflict(s);
+    return output;
+}
+
+deque<Activity> shortest_prior(deque<Activity> s) {
+    std::cout << __FUNCTION__ << std::endl;
+
+    std::sort(s.begin(), s.end(),
+              [](Activity a1, Activity a2) {return (a1.f - a1.s) < (a2.s - a2.f);});
+
+    std::cout << " sorted s: ";
+    std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << a << ", ";});
+    std::cout << std::endl;
+
+    deque<Activity> output = drop_conflict(s);
+    return output;
+}
+
+deque<Activity> first_start_prior(deque<Activity> s) {
+    std::cout << __FUNCTION__ << std::endl;
+
+    std::sort(s.begin(), s.end(), [](Activity a1, Activity a2) {return a1.s < a2.s;});
+
+    std::cout << " sorted s: ";
+    std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << a << ", ";});
+    std::cout << std::endl;
+
+    deque<Activity> output = drop_conflict(s);
+    return output;
+}
+
+deque<Activity> least_conflict_prior(deque<Activity> s) {
+    std::cout << __FUNCTION__ << std::endl;
+
     deque<Activity> output;
     while (!s.empty()) {
+        std::sort(s.begin(), s.end(),
+                  [s](Activity a1, Activity a2) {return count_conflict(a1, s) < count_conflict(a2, s);});
         auto a = s[0];
         output.push_back(a);
         s.pop_front();
-
-        auto it = s.cbegin();
-        while (it != s.cend()) {
-            if (it->s <= a.f)
-                it = s.erase(it);
-            else
-                ++it;
-        }
+        drop_conflict(a, s);
     }
-
     return output;
 }
 
