@@ -13,11 +13,11 @@
 #define ALGORITHMDESIGN_ACTIVITYSELECTION_HPP
 
 #include <iostream>
-#include <vector>
+#include <deque>
 #include <random>
 #include <algorithm>
 
-using std::vector;
+using std::deque;
 
 
 struct Activity
@@ -31,9 +31,9 @@ struct Activity
     }
 };
 
-vector<Activity> get_activities(int n)
+deque<Activity> get_activities(int n)
 {
-    vector<Activity> activities;
+    deque<Activity> activities;
 
     std::random_device rd;
     std::mt19937 mt = std::mt19937(rd());
@@ -47,11 +47,34 @@ vector<Activity> get_activities(int n)
     return activities;
 }
 
-
-vector<Activity> first_finish_prior(vector<Activity> s) {
+/**
+ * 最早结束活动优先
+ *  先对所有活动按照结束时间从早到晚排序
+ *  [loop]拿到一个活动, 排除剩下活动中与之时间冲突的活动, 直到没有剩余活动
+ * @param s 候选活动集
+ * @return 最终活动集
+ */
+deque<Activity> first_finish_prior(deque<Activity> s) {
     std::sort(s.begin(), s.end(), [](Activity a1, Activity a2) {return a1.f < a2.f;});
     std::for_each(s.begin(), s.end(), [](Activity a) {std::cout << a << ", ";});
+    std::cout << std::endl;
 
+    deque<Activity> output;
+    while (!s.empty()) {
+        auto a = s[0];
+        output.push_back(a);
+        s.pop_front();
+
+        auto it = s.cbegin();
+        while (it != s.cend()) {
+            if (it->s <= a.f)
+                it = s.erase(it);
+            else
+                ++it;
+        }
+    }
+
+    return output;
 }
 
 #endif //ALGORITHMDESIGN_ACTIVITYSELECTION_HPP
