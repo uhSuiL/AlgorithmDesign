@@ -31,6 +31,11 @@ struct Activity
     }
 };
 
+/**
+ * 获取n个Activity组成的集合(deque)
+ * @param n 活动数量
+ * @return
+ */
 deque<Activity> get_activities(int n)
 {
     deque<Activity> activities;
@@ -40,7 +45,15 @@ deque<Activity> get_activities(int n)
     std::uniform_int_distribution<int> dist = std::uniform_int_distribution<int>(1, 24);
 
     for (int i = 0; i < n; ++i) {
-        Activity a = Activity(dist(mt), dist(mt));
+        auto s = dist(mt), f = dist(mt);
+        if (s > f)
+            std::swap(s, f);
+        else if (s == f) {
+            auto tmp_dist = std::uniform_int_distribution<int>(1, s);
+            s -= tmp_dist(mt);
+        }
+
+        Activity a = Activity(s, f);
         activities.push_back(a);
     }
 
