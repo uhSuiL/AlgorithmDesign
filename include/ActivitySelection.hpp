@@ -68,7 +68,7 @@ deque<Activity> get_activities(int n)
 void drop_conflict(const Activity &a, deque<Activity> &s) {
     auto it = s.cbegin();
     while (it != s.cend()) {
-        if (it->s <= a.f)
+        if (it->s <= a.f)  // TODO: 条件判断bug
             it = s.erase(it);
         else
             ++it;
@@ -94,7 +94,7 @@ deque<Activity> drop_conflict(deque<Activity> &s) {
 size_t count_conflict(const Activity &a, const deque<Activity> &s) {
     size_t num_conflict = 0;
     for (auto it = s.begin(); it < s.end(); ++it) {
-        if (a.s < it->f or a.f > it->s)
+        if (a.s < it->f or a.f > it->s)  // TODO: 条件判断bug
             ++num_conflict;
     }
     return num_conflict;
