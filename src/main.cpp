@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "../include/MaximumSubArray.hpp"
 #include "../include/ActivitySelection.hpp"
+#include "../include/RadarInstallation.hpp"
 
 
 void test_activity_selection(int n = 10) {
@@ -36,6 +37,12 @@ void test_activity_selection(int n = 10) {
     std::for_each(output.begin(), output.end(), [](Activity a) {std::cout << "\t"<<a;});
     std::cout << "------" << std::endl;
 }
+
+void test_radar_selection() {
+    auto islands = get_islands(10);
+//    std::for_each(islands.begin(), islands.end())
+}
+
 
 int main(int argc, char* argv[]) {
     test_activity_selection();
